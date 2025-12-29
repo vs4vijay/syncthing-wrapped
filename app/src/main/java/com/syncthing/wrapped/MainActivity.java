@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     private WebView webView;
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private boolean syncthingStarted = false;
     private boolean isConnected = false;
     private int retryCount = 0;
 
@@ -94,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                     webView.postDelayed(() -> webView.loadUrl(SYNCTHING_URL), delayMs);
                 } else if (retryCount >= MAX_RETRY_ATTEMPTS) {
                     // Max retries reached
-                    Toast.makeText(MainActivity.this, "Unable to connect to Syncthing. Please check if the service is running.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, R.string.connection_max_retries, Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -108,10 +107,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.service_starting, Toast.LENGTH_SHORT).show();
 
         // Load Syncthing web UI after a delay to allow service to start
-        webView.postDelayed(() -> {
-            syncthingStarted = true;
-            webView.loadUrl(SYNCTHING_URL);
-        }, 3000);
+        webView.postDelayed(() -> webView.loadUrl(SYNCTHING_URL), 3000);
     }
 
     private void startSyncthingService() {

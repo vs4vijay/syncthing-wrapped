@@ -21,4 +21,5 @@
     <string name="button_background">Background</string>
     <string name="button_close_app">Close App</string>
     <string name="pull_to_refresh_hint">Pull to refresh</string>
+    <string name="connection_max_retries">Unable to connect to Syncthing. Please check if the service is running.</string>
 </resources>
