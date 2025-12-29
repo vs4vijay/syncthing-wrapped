@@ -32,3 +32,6 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Syncthing binaries (downloaded during build)
+app/src/main/assets/syncthing-*
