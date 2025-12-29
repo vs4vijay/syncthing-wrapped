@@ -1,7 +1,9 @@
 # Syncthing Wrapped
 
-> Under Development
 
+
+> [!IMPORTANT]
+> Under Development
 > Vibe coded experiment with syncthing given the current syncthing Android fork situation 
 
 A Syncthing wapper for Android that runs the original Syncthing binary in a WebView with proper background service management, battery optimization handling.
