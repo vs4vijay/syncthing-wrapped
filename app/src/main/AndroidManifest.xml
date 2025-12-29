@@ -21,6 +21,20 @@
         android:usesCleartextTraffic="true"
         android:networkSecurityConfig="@xml/network_security_config">
         
+        <!-- TODO: To customize the app launcher icon, replace the default icons in these directories:
+             - app/src/main/res/mipmap-mdpi/ic_launcher.png (48x48 px)
+             - app/src/main/res/mipmap-hdpi/ic_launcher.png (72x72 px)
+             - app/src/main/res/mipmap-xhdpi/ic_launcher.png (96x96 px)
+             - app/src/main/res/mipmap-xxhdpi/ic_launcher.png (144x144 px)
+             - app/src/main/res/mipmap-xxxhdpi/ic_launcher.png (192x192 px)
+             - app/src/main/res/mipmap-mdpi/ic_launcher_round.png (48x48 px)
+             - app/src/main/res/mipmap-hdpi/ic_launcher_round.png (72x72 px)
+             - app/src/main/res/mipmap-xhdpi/ic_launcher_round.png (96x96 px)
+             - app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png (144x144 px)
+             - app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png (192x192 px)
+             Use Android Studio's Image Asset tool or create custom icons manually.
+        -->
+        
         <activity
             android:name=".MainActivity"
             android:exported="true"
