@@ -21,11 +21,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class MainActivity extends AppCompatActivity {
     private static final String SYNCTHING_URL = "http://127.0.0.1:8384";
+    private static final int MAX_RETRY_ATTEMPTS = 10; // Maximum number of retry attempts
     private WebView webView;
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private boolean syncthingStarted = false;
     private boolean isConnected = false;
+    private int retryCount = 0;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -59,16 +61,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageStarted(WebView view, String url, android.graphics.Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                // Don't hide progress bar yet, wait for successful connection
-                swipeRefreshLayout.setRefreshing(true);
+                // Only show refresh indicator if not already refreshing (to avoid conflict with user gesture)
+                if (!swipeRefreshLayout.isRefreshing()) {
+                    swipeRefreshLayout.setRefreshing(true);
+                }
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                // Only hide progress bar and show connected message if this is the first successful connection
-                if (!isConnected) {
+                // Only mark as connected if we actually loaded the Syncthing URL successfully
+                if (url != null && url.startsWith(SYNCTHING_URL) && !isConnected) {
                     isConnected = true;
+                    retryCount = 0; // Reset retry count on successful connection
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(MainActivity.this, R.string.connection_status_connected, Toast.LENGTH_SHORT).show();
                 }
@@ -80,11 +85,16 @@ public class MainActivity extends AppCompatActivity {
                 super.onReceivedError(view, errorCode, description, failingUrl);
                 swipeRefreshLayout.setRefreshing(false);
                 
-                if (!isConnected) {
+                if (!isConnected && retryCount < MAX_RETRY_ATTEMPTS) {
+                    retryCount++;
                     // Show retry message only if not yet connected
                     Toast.makeText(MainActivity.this, R.string.connection_status_failed, Toast.LENGTH_SHORT).show();
-                    // Retry loading after a delay
-                    webView.postDelayed(() -> webView.loadUrl(SYNCTHING_URL), 2000);
+                    // Retry loading after a delay with exponential backoff
+                    long delayMs = Math.min(2000 * retryCount, 10000); // Max 10 seconds delay
+                    webView.postDelayed(() -> webView.loadUrl(SYNCTHING_URL), delayMs);
+                } else if (retryCount >= MAX_RETRY_ATTEMPTS) {
+                    // Max retries reached
+                    Toast.makeText(MainActivity.this, "Unable to connect to Syncthing. Please check if the service is running.", Toast.LENGTH_LONG).show();
                 }
             }
         });
