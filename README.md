@@ -23,7 +23,7 @@ The app consists of:
 - **SyncthingService**: Foreground service that extracts and runs the Syncthing binary
 - **Syncthing Binaries**: Native binaries bundled in assets for different Android architectures
 
-## Build Instructions
+## Development
 
 ### Prerequisites
 
@@ -63,30 +63,6 @@ The app consists of:
 adb install app/build/outputs/apk/debug/app-debug.apk
 ```
 
-## Development
-
-### Project Structure
-
-```
-syncthing-wrapped/
-├── app/
-│   ├── src/main/
-│   │   ├── java/com/syncthing/wrapped/
-│   │   │   ├── MainActivity.java       # Main activity with WebView
-│   │   │   └── SyncthingService.java   # Background service
-│   │   ├── res/                         # Android resources
-│   │   ├── assets/                      # Syncthing binaries
-│   │   └── AndroidManifest.xml
-│   └── build.gradle
-├── scripts/
-│   └── download-syncthing.sh           # Script to download Syncthing binaries
-├── .github/workflows/
-│   └── android-ci.yml                  # CI/CD pipeline
-├── build.gradle
-├── settings.gradle
-└── README.md
-```
-
 ### Running Lint
 
 ```bash
@@ -98,25 +74,6 @@ syncthing-wrapped/
 ```bash
 ./gradlew test
 ```
-
-## CI/CD Pipeline
-
-The project includes a GitHub Actions workflow that:
-1. **Lint Check**: Runs Android lint on every PR and push
-2. **Build**: Compiles debug and release APKs
-3. **Test**: Runs unit tests
-4. **Artifacts**: Uploads built APKs as artifacts
-
-### Workflow Triggers
-- Push to `main` or `develop` branches
-- Pull requests to `main` or `develop` branches
-
-### Downloading Build Artifacts
-
-After a successful CI build, you can download the APK from the GitHub Actions artifacts:
-1. Go to the Actions tab in the repository
-2. Click on the latest workflow run
-3. Download the `app-debug` or `app-release` artifact
 
 ## Permissions
 
@@ -169,11 +126,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 
 This project is licensed under the terms specified in the LICENSE file.
-
-## Acknowledgments
-
-- [Syncthing](https://syncthing.net/): The core synchronization engine
-- [Syncthing-Android](https://github.com/syncthing/syncthing-android): Inspiration for the wrapper approach
 
 ## Version Information
 
